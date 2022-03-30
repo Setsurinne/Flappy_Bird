@@ -5,6 +5,7 @@
 #include <graphics.h>
 #include <iostream>
 #include <stdio.h>
+#include <string> 
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
 
@@ -54,7 +55,11 @@ Pipe pipe_green;
 
 
 // Score
-
+struct Score
+{
+    int point = 0;
+    IMAGE image[10];
+} score;
 
 
 
@@ -72,7 +77,7 @@ void gameInit() {
     int HEIGHT = background.getheight();
 
     // Window
-    initgraph(WIDTH, HEIGHT);
+    initgraph(WIDTH, HEIGHT, 0);
 
     // Ground
     loadimage(&ground.image, "img/ground.png");
@@ -94,6 +99,13 @@ void gameInit() {
     pipe_green.y1 = rand() % 250;
     pipe_green.y2 = rand() % 250;
 
+
+    // score
+    for (int i = 0; i < 10; i++) {
+        char address[20];
+        sprintf_s(address, "img\\score\\%d.png", i);
+        loadimage(&score.image[i], address);
+    }
 };
 
 
@@ -109,6 +121,14 @@ void gameDraw() {
     putimage(pipe_green.x2, pipe_green.y2 + 160, &pipe_green.image[1]);
 
     putimage(ground.x, ground.y, &ground.image);
+    
+    std::string credit = std::to_string(score.point);
+    for (int i = 0; i < credit.size(); i++) {
+        putimage(background.getwidth() / 2 - (credit.size() / 2 - i + 0.5) * score.image[credit[i] - 48].getwidth(),
+                5,
+                &score.image[credit[i] - 48]
+        );
+    }
 
     EndBatchDraw();                                                 // End drawing
 };
@@ -131,7 +151,7 @@ void gameUpdate() {
 
     // Automatically update each frame
     time2 = GetTickCount();
-    if (time2 - time1 > 1000 / FPS) {
+    if ((int)time2 - time1 > 1000 / FPS) {
 
 
         // Update ground
@@ -159,10 +179,12 @@ void gameUpdate() {
         if (pipe_green.x1 < -52) {
             pipe_green.x1 = pipe_green.x2 + 190;
             pipe_green.y1 = rand() % 250;                   // Reset pipe location
+            score.point += 1;                               // Update score
         }
         if (pipe_green.x2 < -52) {
             pipe_green.x2 = pipe_green.x1 + 190;
             pipe_green.y2 = rand() % 250;
+            score.point += 1;
         }
         time1 = time2;
     }
