@@ -17,7 +17,8 @@ bool GAME_START = FALSE;        // To check if game has started, i.e. a mouse cl
 bool GAME_END = FALSE;          // To check if game has end, i.e. a collision occured
 
 // Window
-
+int WIDTH = 0;
+int HEIGHT = 0;
 
 // Background
 IMAGE  background;
@@ -27,7 +28,7 @@ struct Ground
 {
     int x = 0;
     int y = 420;
-    int speed = 2;
+    int speed = 3;
     IMAGE image;
 } ground;
 
@@ -40,7 +41,7 @@ int FPS = 60;
 // Bird
 typedef struct Bird
 {
-    int x = 20;
+    int x = 30;
     int y = 200;
     int size_x = 0;
     int size_y = 0;
@@ -67,7 +68,7 @@ typedef struct Pipe
     int speed = 0;
     IMAGE image[2];
 };
-int SPEED_PIPE = 2;
+int SPEED_PIPE = 3;
 Pipe pipe_green;
 
 
@@ -75,14 +76,25 @@ Pipe pipe_green;
 struct Score
 {
     int point = 0;
+    int y = 5;
     IMAGE image[10];
 } score;
 
 
+// Text
+typedef struct Text {
+    int x = 0;
+    int y = 0;
+    //bool display = true;
+    IMAGE image;
+};
+Text game_over;
+Text tutorial;
+Text title;
+Text button_play;
 
-void gameInit() {
-    srand(time(0));
 
+void gameInitResource() {
     // BGM
     int rc = mciSendString("open sound\\bgm2.wav alias bgm TYPE MPEGVideo ", 0, 0, 0);
     rc = mciSendString("play bgm repeat", 0, 0, 0);
@@ -90,18 +102,14 @@ void gameInit() {
 
     // Background
     loadimage(&background, "img\\background.png");
-    int WIDTH = background.getwidth();
-    int HEIGHT = background.getheight();
+    WIDTH = background.getwidth();
+    HEIGHT = background.getheight();
 
     // Window
     initgraph(WIDTH, HEIGHT, 1);
 
     // Ground
     loadimage(&ground.image, "img/ground.png");
-
-    // Time
-    time1 = GetTickCount();
-    time2 = GetTickCount();
 
     // Bird
     loadimage(&bird.image[0], "img/bird_1_0.png");
@@ -110,22 +118,11 @@ void gameInit() {
     loadimage(&bird.image_rotated[1], "img/bird_1_1.png");
     loadimage(&bird.image[2], "img/bird_1_2.png");
     loadimage(&bird.image_rotated[2], "img/bird_1_2.png");
-    bird.size_x = bird.image[0].getwidth() * 0.8;
-    bird.size_y = bird.image[0].getheight() * 0.8;
 
     // Pipe
     loadimage(&pipe_green.image[0], "img/pipe_green_top.png");
     loadimage(&pipe_green.image[1], "img/pipe_green_down.png");
-    pipe_green.x[0] = WIDTH;
-    pipe_green.x[1] = WIDTH + 190;
-    pipe_green.y[0] = rand() % 250;
-    pipe_green.y[1] = rand() % 250;
-    pipe_green.size_x[0] = pipe_green.image[0].getwidth();
-    pipe_green.size_y[0] = pipe_green.image[0].getheight();
-    pipe_green.size_x[1] = pipe_green.image[1].getwidth();
-    pipe_green.size_y[1] = pipe_green.image[1].getheight();
-    pipe_green.offset[0] = -305;
-    pipe_green.offset[1] = 165;
+
 
     // score
     for (int i = 0; i < 10; i++) {
@@ -133,8 +130,61 @@ void gameInit() {
         sprintf_s(address, "img\\score\\%d.png", i);
         loadimage(&score.image[i], address);
     }
+
+    // text
+    loadimage(&game_over.image, "img\\text_game_over.png");
+    loadimage(&tutorial.image, "img\\tutorial.png");
+    loadimage(&button_play.image, "img\\button_play.png");
+    loadimage(&title.image, "img\\title.png");
 };
 
+
+void gameInitValue() {
+    srand(time(0));
+
+    GAME_START = FALSE;
+    GAME_END = FALSE;
+
+    // score
+    score.point = 0;
+    score.y = 5;
+
+    // pipe
+    pipe_green.speed = 0;
+    pipe_green.x[0] = ground.image.getwidth();
+    pipe_green.x[1] = ground.image.getwidth() + 190;
+    pipe_green.y[0] = rand() % 250;
+    pipe_green.y[1] = rand() % 250;
+    pipe_green.offset[0] = -305;
+    pipe_green.offset[1] = 165;
+    pipe_green.size_x[0] = pipe_green.image[0].getwidth();
+    pipe_green.size_y[0] = pipe_green.image[0].getheight();
+    pipe_green.size_x[1] = pipe_green.image[1].getwidth();
+    pipe_green.size_y[1] = pipe_green.image[1].getheight();
+
+    // bird
+    bird.x = 30;
+    bird.y = 200;
+    bird.g = 0;
+    bird.speed = 0;
+    bird.frame = 0;
+    bird.size_x = bird.image[0].getwidth() * 0.8;
+    bird.size_y = bird.image[0].getheight() * 0.8;
+
+    // Time
+    time1 = GetTickCount();
+    time2 = GetTickCount();
+
+    // Text
+    button_play.x = (WIDTH - button_play.image.getwidth()) / 2;
+    button_play.y = HEIGHT * 0.8;
+    tutorial.x = (WIDTH - tutorial.image.getwidth()) / 2;
+    tutorial.y = HEIGHT * 0.5;
+    title.x = (WIDTH - title.image.getwidth()) / 2;
+    title.y = HEIGHT * 0.1;
+    game_over.x = (WIDTH - game_over.image.getwidth()) / 2;
+    game_over.y = HEIGHT * 0.1;
+}
 
 void gameDraw() {
     BeginBatchDraw();                                               // Start drawing
@@ -148,14 +198,27 @@ void gameDraw() {
     putimage(ground.x, ground.y, &ground.image);
 
     putimage(bird.x, bird.y, &bird.image_rotated[bird.frame]);
-
-    std::string credit = std::to_string(score.point);                                                   // Put score
-    for (int i = 0; i < credit.size(); i++) {
-        putimage(background.getwidth() / 2 - ((int)credit.size() / 2 - i + 0.5) * score.image[0].getwidth(),
-                5,
+    if (GAME_START) {                                                                                  // Put score
+        std::string credit = std::to_string(score.point);
+        for (int i = 0; i < credit.size(); i++) {
+            putimage(background.getwidth() / 2 - ((int)credit.size() / 2 - i + 0.5) * score.image[0].getwidth(),
+                score.y,
                 &score.image[credit[i] - 48]
-        );
+            );
+        }
     }
+
+
+    // Text
+    if (!GAME_START) {
+        putimage(tutorial.x, tutorial.y, &tutorial.image);
+        putimage(title.x, title.y, &title.image);
+    }
+    if (GAME_END) {
+        putimage(button_play.x, button_play.y, &button_play.image);
+        putimage(game_over.x, game_over.y, &game_over.image);
+    }
+
 
     EndBatchDraw();                                                 // End drawing
 };
@@ -164,7 +227,7 @@ void gameDraw() {
 void gameUpdate() {
     // Player update
     MOUSEMSG msg = { 0 };
-    if (!GAME_END && MouseHit()) {
+    if (MouseHit()) {
         msg = GetMouseMsg();
         if (msg.uMsg == WM_LBUTTONDOWN) {
             if (!GAME_START) {                                          // First-time click ==> Start play
@@ -172,9 +235,17 @@ void gameUpdate() {
                 bird.g = G;
                 pipe_green.speed = SPEED_PIPE;
             }
+            else if (GAME_END) {                                        // Restart the game
+                if ((msg.x > button_play.x && msg.x < button_play.x + button_play.image.getwidth()) && 
+                    (msg.y > button_play.y && msg.y < button_play.y + button_play.image.getheight())) {
+
+                    gameInitValue();
+                    mciSendString("seek bgm to start", 0, 0, 0);
+                    mciSendString("play bgm repeat", 0, 0, 0);
+                }
+            }
             else {
                 bird.speed = SPEED_UP;
-
                 mciSendString("seek jump to start", 0, 0, 0);           // Reset jump sound to begin
                 mciSendString("play jump", 0, 0, 0);                    // Play jump sound
             }
@@ -183,7 +254,7 @@ void gameUpdate() {
 
 
 
-    // Automatically update each frame
+    // Automatically update during each frame
     time2 = GetTickCount();
     while ((int)time2 - time1 > 1000 / FPS) {
 
@@ -198,6 +269,7 @@ void gameUpdate() {
         }
 
         if (GAME_END) {
+            score.y = HEIGHT * 0.6;                                 // Put the socre in the middle of the screen
             time1 = time2;
             break;
         }
@@ -269,7 +341,8 @@ void gameUpdate() {
 
 int main()
 {   
-    gameInit();
+    gameInitResource();
+    gameInitValue();
 
     while (1) {
         gameDraw();
