@@ -1,8 +1,12 @@
 ﻿  Flappy_Bird.cpp
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include\graphics.h(1,1): warning C4828: 文件包含在偏移 0x19d3 处开始的字符，该字符在当前源字符集中无效(代码页 936)。
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(42,2): warning C4091: “typedef ”: 没有声明变量时忽略“Bird”的左侧
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(52,2): warning C4091: “typedef ”: 没有声明变量时忽略“Pipe”的左侧
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(67,15): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(127,44): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(154,28): warning C4018: “>”: 有符号/无符号不匹配
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(52,2): warning C4091: “typedef ”: 没有声明变量时忽略“Bird”的左侧
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(68,2): warning C4091: “typedef ”: 没有声明变量时忽略“Pipe”的左侧
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(83,15): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(112,44): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(113,45): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(153,44): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(187,31): warning C4018: “>”: 有符号/无符号不匹配
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(213,28): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(216,30): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
   Flappy_Bird.vcxproj -> C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\x64\Debug\Flappy_Bird.exe
