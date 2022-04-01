@@ -49,8 +49,8 @@ typedef struct Bird
     int frame = 0;
     int g = 0;
     int num_image = 3;
-    IMAGE image[3];
-    IMAGE image_rotated[3];
+    IMAGE image[3][2];
+    IMAGE image_rotated[3][2];
 };
 int SPEED_UP = -12;
 int G = 1;
@@ -58,15 +58,17 @@ Bird bird;
 
 
 // Pipe
+// Two pair of pipes, each pair combines the top one and the buttom one
 typedef struct Pipe
 {
-    int x[2];
-    int y[2];
-    int size_x[2];
-    int size_y[2];
-    int offset[2];
+    int x[2] = {0, 0};
+    int y[2] = { 0, 0 };
+    int size_x[2] = { 0, 0 };
+    int size_y[2] = { 0, 0 };
+    int offset[2] = { 0, 0 };           // To decide the distence between the top one and the buttom one
     int speed = 0;
     IMAGE image[2];
+    IMAGE mask[2];
 };
 int SPEED_PIPE = 3;
 Pipe pipe_green;
@@ -78,6 +80,7 @@ struct Score
     int point = 0;
     int y = 5;
     IMAGE image[10];
+    IMAGE mask[10];
 } score;
 
 
@@ -86,7 +89,8 @@ typedef struct Text {
     int x = 0;
     int y = 0;
     //bool display = true;
-    IMAGE image;
+    IMAGE image = NULL;
+    IMAGE mask = NULL;
 };
 Text game_over;
 Text tutorial;
@@ -112,30 +116,50 @@ void gameInitResource() {
     loadimage(&ground.image, "img/ground.png");
 
     // Bird
-    loadimage(&bird.image[0], "img/bird_1_0.png");
-    loadimage(&bird.image_rotated[0], "img/bird_1_0.png");
-    loadimage(&bird.image[1], "img/bird_1_1.png");
-    loadimage(&bird.image_rotated[1], "img/bird_1_1.png");
-    loadimage(&bird.image[2], "img/bird_1_2.png");
-    loadimage(&bird.image_rotated[2], "img/bird_1_2.png");
+    for (int i = 0; i < 3; i++) {
+        char address[30];
+
+        sprintf_s(address, "img\\bird\\bird_1_%d.png", i);
+        loadimage(&bird.image[i][0], address);
+        loadimage(&bird.image_rotated[i][0], address);
+
+        sprintf_s(address, "img\\bird\\bird_1_%d_mask.png", i);
+        loadimage(&bird.image[i][1], address);
+        loadimage(&bird.image_rotated[i][1], address);
+    }
+
 
     // Pipe
     loadimage(&pipe_green.image[0], "img/pipe_green_top.png");
+    loadimage(&pipe_green.mask[0], "img/pipe_green_top_mask.png");
     loadimage(&pipe_green.image[1], "img/pipe_green_down.png");
+    loadimage(&pipe_green.mask[1], "img/pipe_green_down_mask.png");
 
 
     // score
     for (int i = 0; i < 10; i++) {
-        char address[20];
+        char address[30];
+
         sprintf_s(address, "img\\score\\%d.png", i);
         loadimage(&score.image[i], address);
+
+        sprintf_s(address, "img\\score\\%d_mask.png", i);
+        loadimage(&score.mask[i], address);
     }
 
+
     // text
-    loadimage(&game_over.image, "img\\text_game_over.png");
-    loadimage(&tutorial.image, "img\\tutorial.png");
-    loadimage(&button_play.image, "img\\button_play.png");
-    loadimage(&title.image, "img\\title.png");
+    loadimage(&game_over.image, "img\\text\\text_game_over.png");
+    loadimage(&game_over.mask, "img\\text\\text_game_over_mask.png");
+
+    loadimage(&tutorial.image, "img\\text\\tutorial.png");
+    loadimage(&tutorial.mask, "img\\text\\tutorial_mask.png");
+
+    loadimage(&button_play.image, "img\\text\\button_play.png");
+    loadimage(&button_play.mask, "img\\text\\button_play_mask.png");
+
+    loadimage(&title.image, "img\\text\\title.png");
+    loadimage(&title.mask, "img\\text\\title_mask.png");
 };
 
 
@@ -168,8 +192,8 @@ void gameInitValue() {
     bird.g = 0;
     bird.speed = 0;
     bird.frame = 0;
-    bird.size_x = bird.image[0].getwidth() * 0.8;
-    bird.size_y = bird.image[0].getheight() * 0.8;
+    bird.size_x = bird.image[0][0].getwidth() * 0.8;
+    bird.size_y = bird.image[0][0].getheight() * 0.8;
 
     // Time
     time1 = GetTickCount();
@@ -189,34 +213,55 @@ void gameInitValue() {
 void gameDraw() {
     BeginBatchDraw();                                               // Start drawing
     putimage(0, 0, &background);
-
-    for (int i = 0; i < 2; i++) {
-        putimage(pipe_green.x[i], pipe_green.y[i] + pipe_green.offset[0], &pipe_green.image[0]);        // Put upper pipe
-        putimage(pipe_green.x[i], pipe_green.y[i] + pipe_green.offset[1], &pipe_green.image[1]);        // Put buttom pipe
-    }
-
     putimage(ground.x, ground.y, &ground.image);
 
-    putimage(bird.x, bird.y, &bird.image_rotated[bird.frame]);
-    if (GAME_START) {                                                                                  // Put score
+
+    // Put mask first with AND operation ==> Will make whiet area transparent and leave central black area
+    // Put the original graph with OR operation ==> Will overlay the black area
+    for (int i = 0; i < 2; i++) {
+        putimage(pipe_green.x[i], pipe_green.y[i] + pipe_green.offset[0], &pipe_green.mask[0], SRCAND);         // Put upper pipe
+        putimage(pipe_green.x[i], pipe_green.y[i] + pipe_green.offset[0], &pipe_green.image[0], SRCPAINT);        
+        putimage(pipe_green.x[i], pipe_green.y[i] + pipe_green.offset[1], &pipe_green.mask[1], SRCAND);         // Put buttom pipe
+        putimage(pipe_green.x[i], pipe_green.y[i] + pipe_green.offset[1], &pipe_green.image[1], SRCPAINT);        
+    }
+
+    putimage(bird.x, bird.y, &bird.image_rotated[bird.frame][1], SRCAND);
+    putimage(bird.x, bird.y, &bird.image_rotated[bird.frame][0], SRCPAINT);
+
+
+    if (GAME_START) {                                                                                           // Put score
         std::string credit = std::to_string(score.point);
         for (int i = 0; i < credit.size(); i++) {
+            putimage(background.getwidth() / 2 - ((int)credit.size() / 2 - i + 0.5) * score.mask[0].getwidth(),
+                score.y,
+                &score.mask[credit[i] - 48],
+                SRCAND
+            );
+
             putimage(background.getwidth() / 2 - ((int)credit.size() / 2 - i + 0.5) * score.image[0].getwidth(),
                 score.y,
-                &score.image[credit[i] - 48]
+                &score.image[credit[i] - 48],
+                SRCPAINT
             );
         }
     }
 
 
+
     // Text
     if (!GAME_START) {
-        putimage(tutorial.x, tutorial.y, &tutorial.image);
-        putimage(title.x, title.y, &title.image);
+        putimage(tutorial.x, tutorial.y, &tutorial.mask, SRCAND);
+        putimage(tutorial.x, tutorial.y, &tutorial.image, SRCPAINT);
+
+        putimage(title.x, title.y, &title.mask, SRCAND);
+        putimage(title.x, title.y, &title.image, SRCPAINT);
     }
     if (GAME_END) {
-        putimage(button_play.x, button_play.y, &button_play.image);
-        putimage(game_over.x, game_over.y, &game_over.image);
+        putimage(button_play.x, button_play.y, &button_play.mask, SRCAND);
+        putimage(button_play.x, button_play.y, &button_play.image, SRCPAINT);
+
+        putimage(game_over.x, game_over.y, &game_over.mask, SRCAND);
+        putimage(game_over.x, game_over.y, &game_over.image, SRCPAINT);
     }
 
 
@@ -289,15 +334,16 @@ void gameUpdate() {
             angle = PI / 3.5 * ((float) bird.speed / SPEED_UP);
         }
         for (int i = 0; i < bird.num_image; i++) {
-            rotateimage(&bird.image_rotated[i], &bird.image[i], angle);
+            rotateimage(&bird.image_rotated[i][0], &bird.image[i][0], angle);
+            rotateimage(&bird.image_rotated[i][1], &bird.image[i][1], angle, WHITE);            // Rotate and set background color as white
         }
 
 
         // Bird collision with pipe
         for (int i = 0; i < 2; i++) {
-            if (bird.x + bird.image[0].getwidth() * 0.1 <= pipe_green.x[i] + pipe_green.size_x[i] &&
+            if (bird.x + bird.image[0][0].getwidth() * 0.1 <= pipe_green.x[i] + pipe_green.size_x[i] &&
                 bird.x + bird.size_x >= pipe_green.x[i] &&
-                    (   bird.y + bird.image[0].getheight() * 0.1 <= pipe_green.y[i] + pipe_green.offset[0] + pipe_green.size_y[0] ||
+                    (   bird.y + bird.image[0][0].getheight() * 0.1 <= pipe_green.y[i] + pipe_green.offset[0] + pipe_green.size_y[0] ||
                         bird.y + bird.size_y >= pipe_green.y[i] + pipe_green.offset[1]
                     )
                 ) {
@@ -352,17 +398,3 @@ int main()
     closegraph();
     return EXIT_SUCCESS;
 }
-
-
-
-
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
-
-// 入门使用技巧: 
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件

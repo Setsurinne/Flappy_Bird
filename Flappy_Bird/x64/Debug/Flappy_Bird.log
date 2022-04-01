@@ -1,17 +1,19 @@
 ﻿  Flappy_Bird.cpp
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include\graphics.h(1,1): warning C4828: 文件包含在偏移 0x19d3 处开始的字符，该字符在当前源字符集中无效(代码页 936)。
 C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(54,2): warning C4091: “typedef ”: 没有声明变量时忽略“Bird”的左侧
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(70,2): warning C4091: “typedef ”: 没有声明变量时忽略“Pipe”的左侧
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(90,2): warning C4091: “typedef ”: 没有声明变量时忽略“Text”的左侧
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(143,15): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(171,44): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(172,45): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(180,28): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(182,25): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(184,22): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(186,26): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(204,48): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(259,31): warning C4018: “>”: 有符号/无符号不匹配
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(286,28): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(289,30): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(72,2): warning C4091: “typedef ”: 没有声明变量时忽略“Pipe”的左侧
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(94,2): warning C4091: “typedef ”: 没有声明变量时忽略“Text”的左侧
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(165,15): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(193,47): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(194,48): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(202,28): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(204,25): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(206,22): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(208,26): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(233,48): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(239,48): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(301,31): warning C4018: “>”: 有符号/无符号不匹配
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(314,30): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(328,28): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\Flappy_Bird\Flappy_Bird.cpp(331,30): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
   Flappy_Bird.vcxproj -> C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\x64\Debug\Flappy_Bird.exe
