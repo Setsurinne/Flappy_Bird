@@ -213,7 +213,6 @@ void gameInitValue() {
 void gameDraw() {
     BeginBatchDraw();                                               // Start drawing
     putimage(0, 0, &background);
-    putimage(ground.x, ground.y, &ground.image);
 
 
     // Put mask first with AND operation ==> Will make whiet area transparent and leave central black area
@@ -224,6 +223,8 @@ void gameDraw() {
         putimage(pipe_green.x[i], pipe_green.y[i] + pipe_green.offset[1], &pipe_green.mask[1], SRCAND);         // Put buttom pipe
         putimage(pipe_green.x[i], pipe_green.y[i] + pipe_green.offset[1], &pipe_green.image[1], SRCPAINT);        
     }
+
+    putimage(ground.x, ground.y, &ground.image);
 
     putimage(bird.x, bird.y, &bird.image_rotated[bird.frame][1], SRCAND);
     putimage(bird.x, bird.y, &bird.image_rotated[bird.frame][0], SRCPAINT);

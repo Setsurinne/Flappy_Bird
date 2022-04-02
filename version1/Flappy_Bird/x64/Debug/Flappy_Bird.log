@@ -10,10 +10,10 @@ C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cp
 C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cpp(206,25): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
 C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cpp(208,22): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
 C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cpp(210,26): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cpp(235,48): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cpp(241,48): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cpp(304,31): warning C4018: “>”: 有符号/无符号不匹配
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cpp(317,30): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cpp(331,28): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cpp(334,30): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cpp(236,48): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cpp(242,48): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cpp(305,31): warning C4018: “>”: 有符号/无符号不匹配
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cpp(318,30): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cpp(332,28): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\Flappy_Bird\Flappy_Bird.cpp(335,30): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
   Flappy_Bird.vcxproj -> C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version1\x64\Debug\Flappy_Bird.exe

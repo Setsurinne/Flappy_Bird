@@ -52,6 +52,39 @@ int object2D::getHeight() {
     return height;
 }
 
+int object2D::getNumImage() {
+    return image.size();
+}
+
+bool object2D::isVisiable() {
+    return visiable;
+}
+
+bool object2D::isClickable() {
+    return clickable;
+}
+
+bool object2D::isTransparent() {
+    return mask.empty();
+}
+
+void object2D::setValue(
+        int x,
+        int y,
+        int acceleration_x,
+        int acceleration_y,
+        int speed_x,
+        int speed_y)
+{
+    this->x = x;
+    this->y = y;
+    this->acceleration_x = acceleration_x;
+    this->acceleration_y = acceleration_y;
+    this->speed_x = speed_x;
+    this->speed_y = speed_y;
+}
+
+
 void object2D::setX(int val) {
     x = val;
 }
@@ -76,12 +109,24 @@ void object2D::setAccY(int val) {
     acceleration_y = val;
 }
 
-void object2D::loadImage(LPCTSTR address) {
+void object2D::setVisibility(bool val) {
+    visiable = val;
+}
+
+void object2D::setClickability(bool val) {
+    clickable = val;
+}
+
+void object2D::loadImage(LPCTSTR address, LPCTSTR mask_address, int nWidth, int nHeight, bool bResize) {
     IMAGE temp;
-    loadimage(&temp, address);
+    loadimage(&temp, address, nWidth, nHeight, bResize);
     image.push_back(std::move(temp));
     width = image[0].getwidth();
     height = image[0].getheight();
+
+    if (!mask_address) return;
+    loadimage(&temp, mask_address, nWidth, nHeight, bResize);
+    mask.push_back(std::move(temp));
 }
 
 void object2D::draw() {
@@ -101,6 +146,10 @@ void object2D::update() {
 
     setSpeedY(getSpeedY() + getAccY());
     setY(getSpeedY() + getY());
+
+    if (++frame >= getNumImage()) {
+        frame = 0;
+    }
 }
 
 bool object2D::collision(object2D other_obj) {
