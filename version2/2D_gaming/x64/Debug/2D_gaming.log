@@ -1,9 +1,12 @@
 ﻿  components.cpp
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include\graphics.h(1,1): warning C4828: 文件包含在偏移 0x19d3 处开始的字符，该字符在当前源字符集中无效(代码页 936)。
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version2\2D_gaming\components.cpp(20,12): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version2\2D_gaming\components.cpp(27,26): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version2\2D_gaming\components.cpp(23,12): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version2\2D_gaming\components.cpp(30,26): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version2\2D_gaming\components.cpp(72,25): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version2\2D_gaming\components.cpp(78,25): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
   main.cpp
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\VS\include\graphics.h(1,1): warning C4828: 文件包含在偏移 0x19d3 处开始的字符，该字符在当前源字符集中无效(代码页 936)。
-C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version2\2D_gaming\main.cpp(78,23): warning C4018: “<=”: 有符号/无符号不匹配
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version2\2D_gaming\main.cpp(80,15): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version2\2D_gaming\main.cpp(119,23): warning C4018: “<=”: 有符号/无符号不匹配
   正在生成代码...
   2D_gaming.vcxproj -> C:\Users\xjx\Desktop\Flappy_Bird\Flappy_Bird\version2\x64\Debug\2D_gaming.exe

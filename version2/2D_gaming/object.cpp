@@ -118,25 +118,35 @@ void object2D::setClickability(bool val) {
 }
 
 void object2D::loadImage(LPCTSTR address, LPCTSTR mask_address, int nWidth, int nHeight, bool bResize) {
-    IMAGE temp;
-    loadimage(&temp, address, nWidth, nHeight, bResize);
+    IMAGE* temp = new IMAGE();
+    loadimage(temp, address, nWidth, nHeight, bResize);
     image.push_back(std::move(temp));
-    width = image[0].getwidth();
-    height = image[0].getheight();
+
+    width = image[0]->getwidth();
+    height = image[0]->getheight();
 
     if (!mask_address) return;
-    loadimage(&temp, mask_address, nWidth, nHeight, bResize);
+    temp = new IMAGE();
+    loadimage(temp, mask_address, nWidth, nHeight, bResize);
     mask.push_back(std::move(temp));
 }
+
+void object2D::useImage(IMAGE* img, IMAGE* msk){
+    image.push_back(img);
+    mask.push_back(msk);
+    width = image[0]->getwidth();
+    height = image[0]->getheight();
+}
+
 
 void object2D::draw() {
     if (!visiable) return;
     if (mask.empty()) {
-        putimage(x, y, &image[frame]);
+        putimage(x, y, image[frame]);
     }
     else {
-        putimage(x, y, &mask[frame], SRCAND);
-        putimage(x, y, &image[frame], SRCPAINT);
+        putimage(x, y, mask[frame], SRCAND);
+        putimage(x, y, image[frame], SRCPAINT);
     }
 }
 

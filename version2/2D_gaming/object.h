@@ -3,6 +3,7 @@
 #include <graphics.h>
 #include <iostream>
 #include <algorithm>
+#include <string>
 #include <vector>
 class object2D
 {
@@ -46,6 +47,8 @@ public:
 		bool bResize = false	// 是否调整 IMAGE 的大小以适应图片);
 	);
 
+	virtual void useImage(IMAGE* img, IMAGE* msk = NULL);
+
 	virtual void draw();
 	virtual void update();
 	virtual bool collision(object2D other_obj);
@@ -70,8 +73,8 @@ protected:
 	bool clickable;
 	bool visiable;
 
-	std::vector<IMAGE> image;
-	std::vector<IMAGE> mask;
+	std::vector<IMAGE*> image;
+	std::vector<IMAGE*> mask;
 
 	bool isClickMe(int cx, int cy);
 };
