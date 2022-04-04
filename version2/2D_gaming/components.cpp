@@ -3,6 +3,9 @@
 int pivot = rand() % 250;
 bool update_score = false;
 
+//---------------------------------------------------------------------------------------
+// Ground
+Ground::Ground() : Object2DPhysical() {}
 void Ground::update() { 
 
 #if 0
@@ -13,13 +16,16 @@ void Ground::update() {
         setX(0);
     }
     else {
-        object2D::update();
+        Object2DPhysical::update();
     }
 }
 
+//---------------------------------------------------------------------------------------
+// Bird
+Bird::Bird() : Object2DPhysical() {}
 
-void Bird::draw() {
-
+void Bird::draw() const{
+    if (!isVisiable()) return;
     int PI = 3.14159265359;
     float angle = 0;
 
@@ -30,17 +36,27 @@ void Bird::draw() {
         angle = PI / 3.5 * ((float)getSpeedY() / SPEED_UP);
     }
 
-    IMAGE current_image;
-    IMAGE current_mask;
-    rotateimage(&current_image, image[frame], angle);
-    rotateimage(&current_mask, mask[frame], angle, WHITE);
+    IMAGE rotated_image;
+    IMAGE rotated_mask;
+    rotateimage(&rotated_image, image[frame], angle);
+    rotateimage(&rotated_mask, mask[frame], angle, WHITE);
 
-    putimage(x, y, &current_mask, SRCAND);
-    putimage(x, y, &current_image, SRCPAINT);
+    putimage(x, y, &rotated_mask, SRCAND);
+    putimage(x, y, &rotated_image, SRCPAINT);
 }
 
-Pipe::Pipe() :object2D() {};
-Pipe::Pipe(int is_buttom):object2D() {
+void Bird::setCollisionBoxX() {
+    collision_box.setX(getX() + getWidth() * 0.12);
+}
+void Bird::setCollisionBoxY() {
+    collision_box.setY(getY() + getHeight() * 0.2);
+}
+
+//---------------------------------------------------------------------------------------
+// Pipe
+Pipe::Pipe() :Object2DPhysical() {};
+
+Pipe::Pipe(int is_buttom):Pipe() {
     if (is_buttom) {
         this->is_buttom = true;
     }
@@ -50,7 +66,7 @@ Pipe::Pipe(int is_buttom):object2D() {
 }
 
 void Pipe::update() {
-    object2D::update();
+    Object2DPhysical::update();
     if (this->getX() < 0 - this->getWidth()) {
         this->setX(310);
 
@@ -66,7 +82,10 @@ void Pipe::update() {
 }
 
 
-void Score::draw() {
+//---------------------------------------------------------------------------------------
+// Score
+void Score::draw() const{
+    if (!isVisiable()) return;
     std::string credit = std::to_string(this->point);
     for (int i = 0; i < credit.size(); i++) {
         putimage(getX() - ((int)credit.size() / 2 - i + 0.5) * (this->mask[0]->getwidth()),
@@ -88,4 +107,8 @@ void Score::update() {
         point += 1;
         update_score = false;
     }
+}
+
+void Score::setPoint(int val) {
+    this->point = val;
 }

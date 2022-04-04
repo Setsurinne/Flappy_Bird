@@ -1,15 +1,19 @@
-#include "object.h"
+#include "Object2D.h"
 #include "components.h"
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
+
+// Signal
+bool GAME_START = FALSE;        // To check if game has started, i.e. a mouse click happened
+bool GAME_END = FALSE;          // To check if game has end, i.e. a collision occured
 
 // Time
 unsigned long time1, time2;
 int FPS = 60;
 
 // Resources
-std::vector<object2D*> resources;
-object2D* background = new object2D();
+std::vector<Object2D*> resources;
+Object2D* background = new Object2D();
 Ground* ground = new Ground();
 Bird* bird = new Bird();
 
@@ -18,6 +22,7 @@ Pipe* pipe_up_2 = new Pipe(0);
 Pipe* pipe_buttom_1 = new Pipe(1);
 Pipe* pipe_buttom_2 = new Pipe(1);
 Pipe* pipe_pair[2][2] = { {pipe_up_1, pipe_buttom_1}, {pipe_up_2, pipe_buttom_2} };
+Pipe* pipes[4] = { pipe_up_1, pipe_buttom_1, pipe_up_2, pipe_buttom_2 };
 IMAGE pipe[4];
 
 Score* score = new Score();
@@ -61,9 +66,8 @@ void gameInitResource() {
 
     // Push resources to the vector to draw&update together
     resources.push_back(background);
-    for (Pipe** i : pipe_pair) {
-        resources.push_back(i[0]);
-        resources.push_back(i[1]);
+    for (Pipe* i : pipes) {
+        resources.push_back(i);
     }
     resources.push_back(ground);
     resources.push_back(bird);
@@ -79,12 +83,17 @@ void gameInitResource() {
 void gameInitValue() {
     srand(time(0));
     ground->setValue(0, 420, 0, 0, -3, 0);
-    bird->setValue(30, 200, 0, 1);
+
+    bird->setValue(30, 200, 0, 0);
+    bird->setCollisionBoxHeight(bird->getHeight() * 0.6);
+    bird->setCollisionBoxWidth(bird->getWidth() * 0.75);
+
     score->setValue(background->getWidth() / 2, 5);
-    pipe_pair[0][0]->setValue(background->getWidth(), rand() % 250 - 305, 0, 0, -3, 0);
-    pipe_pair[0][1]->setValue(background->getWidth(), pipe_pair[0][0]->getY() + 305 + 165, 0, 0, -3, 0);
-    pipe_pair[1][0]->setValue(background->getWidth() + 190, rand() % 250 - 305, 0, 0, -3, 0);
-    pipe_pair[1][1]->setValue(background->getWidth() + 190, pipe_pair[1][0]->getY() + 305 + 165, 0, 0, -3, 0);
+
+    pipe_pair[0][0]->setValue(background->getWidth(), rand() % 250 - 305);
+    pipe_pair[0][1]->setValue(background->getWidth(), pipe_pair[0][0]->getY() + 305 + 165);
+    pipe_pair[1][0]->setValue(background->getWidth() + 190, rand() % 250 - 305);
+    pipe_pair[1][1]->setValue(background->getWidth() + 190, pipe_pair[1][0]->getY() + 305 + 165);
 
     // Time
     time1 = GetTickCount();
@@ -95,7 +104,7 @@ void gameInitValue() {
 void gameDraw() {
     BeginBatchDraw();                                               // Start drawing
 
-    for (object2D* ptr : resources) {
+    for (Object2D* ptr : resources) {
         ptr->draw();
     }
 
@@ -108,28 +117,61 @@ void gameUpdate() {
     if (MouseHit()) {
         msg = GetMouseMsg();
         if (msg.uMsg == WM_LBUTTONDOWN) {
-            bird->setSpeedY(bird->SPEED_UP);
-            mciSendString("seek jump to start", 0, 0, 0);           // Reset jump sound to begin
-            mciSendString("play jump", 0, 0, 0);                    // Play jump sound
+            if (!GAME_START) {
+                GAME_START = TRUE;
+                bird->setAccY(1);
+                for (Pipe* pipe : pipes) {
+                    pipe->setSpeedX(-3);
+                }
+            }
+            else  {
+                bird->setSpeedY(bird->SPEED_UP);
+                mciSendString("seek jump to start", 0, 0, 0);           // Reset jump sound to begin
+                mciSendString("play jump", 0, 0, 0);                    // Play jump sound
+            }
         }
     }
 
-
+    // Update by frame
     time2 = GetTickCount();
-    if (time2 - time1 <= 1000 / FPS) {
-        return;
+    if (time2 - time1 > 1000 / FPS) {
+        if (GAME_END) {
+            bird->update();
+        }
+        else {
+            for (Object2D* ptr : resources) {
+                ptr->update();
+            }
+        }
+
+        time1 = time2;
     }
-    for (object2D* ptr : resources) {
-        ptr->update();
+
+    // Check collision
+    if (bird->collision(*ground)) {
+        bird->setSpeedY(0);
+        bird->setAccY(0);
+        GAME_END = true;
     }
-    time1 = time2;
+
+    if (GAME_END) return;
+    for (Pipe* i : pipes) {
+        if (bird->collision(*i)) {
+            bird->setSpeedY(bird->SPEED_UP / 2);
+            GAME_END = true;
+        }
+    }
 }
 
 int main() {
     gameInitResource();
     gameInitValue();
+
     while (1) {
         gameDraw();
         gameUpdate();
     }
+
+    closegraph();
+    return EXIT_SUCCESS;
 }

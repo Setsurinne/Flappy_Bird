@@ -1,13 +1,15 @@
 #pragma once
-#include "object.h"
+#include "Object2D.h"
+#include "Object2DPhysical.h"
 extern int pivot;
 
-class Ground : public object2D {
+class Ground : public Object2DPhysical {
 public:
+	Ground();
 	void update();
 };
 
-class Pipe : public object2D {
+class Pipe : public Object2DPhysical {
 public:
 	Pipe();
 	Pipe(int is_buttom);
@@ -15,16 +17,22 @@ public:
 	bool is_buttom = false;
 };
 
-class Bird : public object2D {
+class Bird : public Object2DPhysical {
 public:
-	void draw();
+	Bird();
+	void draw() const;
 	int SPEED_UP = -12;
+
+protected:
+	virtual void setCollisionBoxX();
+	virtual void setCollisionBoxY();
 };
 
-class Score : public object2D {
+class Score : public Object2D {
 public:
-	void draw();
+	void draw() const;
 	void update();
+	void setPoint(int);
 
 private:
 	int point = 0;
