@@ -20,10 +20,13 @@ public:
 class Bird : public Object2DPhysical {
 public:
 	Bird();
+	void update();
 	void draw() const;
 	int SPEED_UP = -12;
 
 protected:
+	IMAGE rotated_image;
+	IMAGE rotated_mask;
 	virtual void setCollisionBoxX();
 	virtual void setCollisionBoxY();
 };
@@ -36,4 +39,16 @@ public:
 
 private:
 	int point = 0;
+};
+
+class OpenText : public Object2D {
+public:
+	void update();
+};
+
+
+class EndText : public Object2D {
+public:
+	EndText();
+	void update();
 };

@@ -1,5 +1,8 @@
 #include "Object2D.h"
 
+extern bool GAME_START;
+extern bool GAME_END;
+
 Object2D::Object2D(){
     x = 0;
     y = 0;
@@ -12,6 +15,12 @@ Object2D::Object2D(){
     visiable = true;
 
     clickAction = NULL;
+}
+
+Object2D::~Object2D() {}
+
+void Object2D::destroy() {
+    this->~Object2D();
 }
 
 int Object2D::getX() const {
@@ -110,7 +119,7 @@ void Object2D::useImage(IMAGE* img, IMAGE* msk){
 
 
 void Object2D::draw() const {
-    if (!visiable) return;
+    if (!isVisiable()) return;
     if (mask.empty()) {
         putimage(x, y, image[frame]);
     }
@@ -139,7 +148,7 @@ bool Object2D::isClickMe(int cx, int cy)
 }
 
 void Object2D::receiveEvent(int cx, int cy) {
-    if (isClickMe(cx, cy))
+    if (isClickable() && clickAction && isClickMe(cx, cy))
     {
         clickAction();
     }

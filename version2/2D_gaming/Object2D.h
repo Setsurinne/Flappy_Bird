@@ -5,11 +5,14 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <signal.h>
 
 class Object2D
 {
 public:
 	Object2D();
+	~Object2D();
+	void destroy();
 
 	int getX() const;
 	int getY() const;

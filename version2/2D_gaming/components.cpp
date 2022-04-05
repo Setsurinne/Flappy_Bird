@@ -1,16 +1,18 @@
 #include "components.h"
 
-int pivot = rand() % 250;
+extern bool GAME_START;
+extern bool GAME_END;
+extern int pivot;
 bool update_score = false;
 
 //---------------------------------------------------------------------------------------
 // Ground
 Ground::Ground() : Object2DPhysical() {}
 void Ground::update() { 
-
 #if 0
     std::cout << "ground update" << getX() << std::endl;
 #endif
+    if (GAME_END) return;
 
     if (getX() < -20) {                                       // Reset ground
         setX(0);
@@ -24,8 +26,10 @@ void Ground::update() {
 // Bird
 Bird::Bird() : Object2DPhysical() {}
 
-void Bird::draw() const{
-    if (!isVisiable()) return;
+void Bird::update() {
+    Object2DPhysical::update();
+
+    if (GAME_END) return;
     int PI = 3.14159265359;
     float angle = 0;
 
@@ -36,10 +40,12 @@ void Bird::draw() const{
         angle = PI / 3.5 * ((float)getSpeedY() / SPEED_UP);
     }
 
-    IMAGE rotated_image;
-    IMAGE rotated_mask;
     rotateimage(&rotated_image, image[frame], angle);
     rotateimage(&rotated_mask, mask[frame], angle, WHITE);
+}
+
+void Bird::draw() const{
+    if (!isVisiable()) return;
 
     putimage(x, y, &rotated_mask, SRCAND);
     putimage(x, y, &rotated_image, SRCPAINT);
@@ -66,6 +72,9 @@ Pipe::Pipe(int is_buttom):Pipe() {
 }
 
 void Pipe::update() {
+    if (GAME_END || !GAME_START) {
+        return;
+    }
     Object2DPhysical::update();
     if (this->getX() < 0 - this->getWidth()) {
         this->setX(310);
@@ -103,6 +112,14 @@ void Score::draw() const{
 }
 
 void Score::update() {
+    if (GAME_START && !isVisiable()) {
+        setVisibility(true);
+    }
+    if (GAME_END) {
+        setY(250);
+        return;
+    }
+
     if (update_score) {
         point += 1;
         update_score = false;
@@ -111,4 +128,32 @@ void Score::update() {
 
 void Score::setPoint(int val) {
     this->point = val;
+}
+
+
+void OpenText::update() {
+    if (GAME_START && isVisiable()) {
+        setVisibility(false);
+        setClickability(false);
+    }
+    if (!GAME_START && !isVisiable()) {
+        setVisibility(true);
+        setClickability(true);
+    }
+}
+
+
+EndText::EndText() : Object2D() {
+    setVisibility(false);
+}
+
+void EndText::update() {
+    if (!GAME_END && isVisiable()) {
+        setVisibility(false);
+        setClickability(false);
+    }
+    if (GAME_END && !isVisiable()) {
+        setVisibility(true);
+        setClickability(true);
+    }
 }
