@@ -9,6 +9,7 @@ extern bool GAME_END;
 void gameInitResource();
 void gameInitValue();
 void gameUpdate();
+void gameClick();
 void gameDraw();
 
 void buttonClick();
@@ -188,13 +189,8 @@ void gameDraw() {
     EndBatchDraw();
 }
 
-void gameEnd() {
-    if (GAME_END) return;
 
-}
-
-void gameUpdate() {
-    // Player update
+void gameClick() {
     MOUSEMSG msg = { 0 };
     if (MouseHit()) {
         msg = GetMouseMsg();
@@ -207,6 +203,12 @@ void gameUpdate() {
             }
         }
     }
+}
+
+
+void gameUpdate() {
+    // Player update
+    gameClick();
 
     // Update by frame
     time2 = GetTickCount();
