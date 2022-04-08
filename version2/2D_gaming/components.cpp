@@ -1,7 +1,5 @@
 #include "components.h"
 
-extern bool GAME_START;
-extern bool GAME_END;
 extern int pivot;
 bool update_score = false;
 
@@ -12,8 +10,7 @@ void Ground::update() {
 #if 0
     std::cout << "ground update" << getX() << std::endl;
 #endif
-    if (GAME_END) return;
-
+    if (isPaused()) return;
     if (getX() < -20) {                                       // Reset ground
         setX(0);
     }
@@ -29,7 +26,6 @@ Bird::Bird() : Object2DPhysical() {}
 void Bird::update() {
     Object2DPhysical::update();
 
-    if (GAME_END) return;
     int PI = 3.14159265359;
     float angle = 0;
 
@@ -72,9 +68,7 @@ Pipe::Pipe(int is_buttom):Pipe() {
 }
 
 void Pipe::update() {
-    if (GAME_END || !GAME_START) {
-        return;
-    }
+    if (isPaused()) return;
     Object2DPhysical::update();
     if (this->getX() < 0 - this->getWidth()) {
         this->setX(310);
@@ -112,14 +106,6 @@ void Score::draw() const{
 }
 
 void Score::update() {
-    if (GAME_START && !isVisiable()) {
-        setVisibility(true);
-    }
-    if (GAME_END) {
-        setY(250);
-        return;
-    }
-
     if (update_score) {
         point += 1;
         update_score = false;
@@ -128,32 +114,4 @@ void Score::update() {
 
 void Score::setPoint(int val) {
     this->point = val;
-}
-
-
-void OpenText::update() {
-    if (GAME_START && isVisiable()) {
-        setVisibility(false);
-        setClickability(false);
-    }
-    if (!GAME_START && !isVisiable()) {
-        setVisibility(true);
-        setClickability(true);
-    }
-}
-
-
-EndText::EndText() : Object2D() {
-    setVisibility(false);
-}
-
-void EndText::update() {
-    if (!GAME_END && isVisiable()) {
-        setVisibility(false);
-        setClickability(false);
-    }
-    if (GAME_END && !isVisiable()) {
-        setVisibility(true);
-        setClickability(true);
-    }
 }

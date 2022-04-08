@@ -13,6 +13,7 @@ Object2D::Object2D(){
 
     clickable = false;
     visiable = true;
+    pause = false;
 
     clickAction = NULL;
 }
@@ -57,6 +58,10 @@ bool Object2D::isTransparent() const {
 }
 
 
+bool Object2D::isPaused() const {
+    return pause;
+}
+
 void Object2D::setValue(int x, int y)
 {
     this->x = x;
@@ -86,6 +91,10 @@ void Object2D::setVisibility(bool val) {
 
 void Object2D::setClickability(bool val) {
     clickable = val;
+}
+
+void Object2D::setPause(bool val) {
+    pause = val;
 }
 
 void Object2D::loadImage(LPCTSTR address, LPCTSTR mask_address, int nWidth, int nHeight, bool bResize) {
@@ -130,6 +139,7 @@ void Object2D::draw() const {
 }
 
 void Object2D::update() {
+    if (isPaused()) return;
     if (++frame >= getNumImage()) {
         frame = 0;
     }

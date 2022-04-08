@@ -1,10 +1,10 @@
-#include "Object2D.h"
+#include "Scene.h"
 #include "components.h"
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
 
-extern bool GAME_START;
-extern bool GAME_END;
+bool GAME_START = false;
+bool GAME_END = false;
 
 void gameInitResource();
 void gameInitValue();
@@ -15,13 +15,15 @@ void gameDraw();
 void buttonClick();
 void backgroundClick();
 
+void turnStart();
+void turnEnd();
+void turnRestart();
+
 // Time
 unsigned long   time1, time2;
 int             FPS = 60;
 
 // Resources
-std::vector<Object2D*>      resources;
-
 Object2D*   background      = new Object2D();
 Ground*     ground          = new Ground();
 Bird*       bird            = new Bird();
@@ -38,26 +40,29 @@ int         pivot           = 0;
 
 Score*      score           = new Score();
 
-OpenText*   tutorial        = new OpenText();
-OpenText*   title           = new OpenText();
-EndText*    button_play     = new EndText();
-EndText*    game_over       = new EndText();
+Object2D*   tutorial        = new Object2D();
+Object2D*   title           = new Object2D();
+Object2D*   button_play     = new Object2D();
+Object2D*   game_over       = new Object2D();
 
+
+// Scenes
+std::vector<Object2D*> resource_onplay  { background, pipe_up_1, pipe_buttom_1, pipe_up_2, pipe_buttom_2, ground, bird, score};
+std::vector<Object2D*> resource_end     { button_play, game_over };
+std::vector<Object2D*> resource_before  { title, tutorial };
+
+Scene scene_onplay(resource_onplay, true, false);
+Scene scene_before(resource_before, true, true, NULL, turnStart);
+Scene scene_end(resource_end, false, false, turnEnd, turnRestart);
 
 void buttonClick() {
-    GAME_START = false;
-    GAME_END = false;
-    gameInitValue();
+    scene_end.sceneEnd();
 }
 
 void backgroundClick() {
+    scene_before.sceneEnd();
     if (!GAME_START) {
         GAME_START = true;
-
-        bird->setAccY(1);
-        for (Pipe* pipe : pipes) {
-            pipe->setSpeedX(-3);
-        }
     }
     else {
         bird->setSpeedY(bird->SPEED_UP);
@@ -66,6 +71,31 @@ void backgroundClick() {
     }
 }
 
+void turnStart() {
+    bird->setAccY(1);
+    score->setVisibility(true);
+    for (Pipe* pipe : pipes) {
+        pipe->setSpeedX(-3);
+    }
+}
+
+void turnEnd() {
+    GAME_END = true;
+    score->setY(250);
+    for (Pipe* pipe : pipes) {
+        pipe->setPause(true);
+        pipe->setCollidability(false);
+    }
+    ground->setPause(true);
+}
+
+
+void turnRestart() {
+    GAME_END = false;
+    GAME_START = false;
+    gameInitValue();
+    scene_before.sceneBegin();
+}
 
 void gameInitResource() {
     // Background
@@ -117,20 +147,6 @@ void gameInitResource() {
     button_play ->  clickAction = buttonClick;
     button_play ->  setClickability(true);
 
-    // Push resources to the vector to draw&update together, 
-    // the action draw&update will be done in the order of been push_back
-    resources.push_back(background);
-    for (Pipe* i : pipes) {
-        resources.push_back(i);
-    }
-    resources.push_back(ground);
-    resources.push_back(bird);
-    resources.push_back(score);
-    resources.push_back(tutorial);
-    resources.push_back(title);
-    resources.push_back(button_play);
-    resources.push_back(game_over);
-
     // BGM
     int rc = mciSendString("open sound\\bgm2.wav alias bgm TYPE MPEGVideo ", 0, 0, 0);
     rc = mciSendString("open sound\\jump.mp3 alias jump", 0, 0, 0);
@@ -142,6 +158,7 @@ void gameInitValue() {
 
     // Ground
     ground->setValue(0, 420, 0, 0, -3, 0);
+    ground->setPause(false);
 
     // Bird
     bird->setValue(30, 200, 0, 0);
@@ -162,6 +179,10 @@ void gameInitValue() {
     pipe_pair[1][0]->setValue(background->getWidth() + 190, pivot - 305);
     pipe_pair[1][1]->setValue(background->getWidth() + 190, pivot + 165);
 
+    for (Pipe* pipe : pipes) {
+        pipe->setPause(false);
+        pipe->setCollidability(true);
+    }
 
     // Texts
     tutorial    ->setValue((background->getWidth() - tutorial   ->getWidth())/ 2, background->getHeight() * 0.5);
@@ -176,16 +197,15 @@ void gameInitValue() {
     // BGM
     mciSendString("seek bgm to start", 0, 0, 0);
     mciSendString("play bgm repeat", 0, 0, 0);
+
 }
 
 
 void gameDraw() {
     BeginBatchDraw();                                               // Start drawing
-
-    for (Object2D* ptr : resources) {
-        ptr->draw();
-    }
-
+    scene_onplay.draw();
+    scene_before.draw();
+    scene_end.draw();
     EndBatchDraw();
 }
 
@@ -213,25 +233,23 @@ void gameUpdate() {
     // Update by frame
     time2 = GetTickCount();
     if ((int) time2 - time1 > 1000 / FPS) {
-        for (Object2D* ptr : resources) {
-            ptr->update();
-        }
+        scene_onplay.updateByTick();
+        scene_before.updateByTick();
+        scene_end.updateByTick();
         
         time1 = time2;
     }
 
     // Check collision
     if (bird->collision(*ground)) {
-        bird->setSpeedY(0);
-        bird->setAccY(0);
-        GAME_END = true;
+        scene_end.sceneBegin();
     }
 
-    if (GAME_END) return;
     for (Pipe* i : pipes) {
         if (bird->collision(*i)) {
             bird->setSpeedY(bird->SPEED_UP / 2);
-            GAME_END = true;
+            scene_end.sceneBegin();
+            break;
         }
     }
 }

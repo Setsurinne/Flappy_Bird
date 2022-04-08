@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <string>
 #include <vector>
-#include <signal.h>
+//#include <signal.h>
 
 /// <summary>
 /// Base class for the 2D object, provide basic function to get/update its properties and draw it out.
@@ -28,6 +28,7 @@ public:
     bool			isVisiable()					const;
     bool			isClickable()					const;
     bool			isTransparent()					const;
+    bool			isPaused()					    const;
 
 // To modify properties of othe object
 
@@ -40,6 +41,7 @@ public:
 
     void			setVisibility(bool val);
     void			setClickability(bool val);
+    void			setPause(bool val);
 
     /// <summary>
     /// Action after been clicked, to be defined by the user
@@ -118,6 +120,11 @@ protected:
     /// To decide if current object is responsive to any draw action
     /// </summary>
     bool visiable;
+
+    /// <summary>
+    /// To decide if current object is responsive to any update action
+    /// </summary>
+    bool pause;
 
     std::vector<IMAGE*> image;
     std::vector<IMAGE*> mask;

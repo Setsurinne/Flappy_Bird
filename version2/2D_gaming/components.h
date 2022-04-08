@@ -40,15 +40,3 @@ public:
 private:
 	int point = 0;
 };
-
-class OpenText : public Object2D {
-public:
-	void update();
-};
-
-
-class EndText : public Object2D {
-public:
-	EndText();
-	void update();
-};
