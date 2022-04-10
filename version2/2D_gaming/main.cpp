@@ -1,6 +1,9 @@
 #include "Scene.h"
 #include "components.h"
+#include "FBWindowManager.h"
 #include <mmsystem.h>
+#include <chrono>
+#include "Timer.h"
 #pragma comment(lib, "winmm.lib")
 
 bool GAME_START = false;
@@ -20,8 +23,8 @@ void turnEnd();
 void turnRestart();
 
 // Time
-unsigned long   time1, time2;
-int             FPS = 60;
+Timer       timer           = Timer();
+int         FPS             = 40;
 
 // Resources
 Object2D*   background      = new Object2D();
@@ -191,8 +194,7 @@ void gameInitValue() {
     game_over   ->setValue((background->getWidth() - game_over  ->getWidth())/ 2, background->getHeight() * 0.1);
 
     // Time
-    time1 = GetTickCount();
-    time2 = GetTickCount();
+    timer.startTick();
 
     // BGM
     mciSendString("seek bgm to start", 0, 0, 0);
@@ -231,14 +233,12 @@ void gameUpdate() {
     gameClick();
 
     // Update by frame
-    time2 = GetTickCount();
-    if ((int) time2 - time1 > 1000 / FPS) {
+    if (timer.oneFramePassed(FPS)) {
         scene_onplay.updateByTick();
         scene_before.updateByTick();
         scene_end.updateByTick();
-        
-        time1 = time2;
     }
+
 
     // Check collision
     if (bird->collision(*ground)) {
@@ -254,7 +254,7 @@ void gameUpdate() {
     }
 }
 
-
+#if 0
 int main() {
     gameInitResource();
     gameInitValue();
@@ -267,3 +267,15 @@ int main() {
     closegraph();
     return EXIT_SUCCESS;
 }
+#endif
+
+#if 1
+int main() {
+    World WORLD(40, 288, 512);
+    FBWindowManager game_window(WORLD);
+
+    initgraph(WORLD.getWidth(), WORLD.getHeight(), 1);
+    game_window.windowLoop();
+    return EXIT_SUCCESS;
+}
+#endif

@@ -5,7 +5,6 @@ bool update_score = false;
 
 //---------------------------------------------------------------------------------------
 // Ground
-Ground::Ground() : Object2DPhysical() {}
 void Ground::update() { 
 #if 0
     std::cout << "ground update" << getX() << std::endl;
@@ -21,8 +20,6 @@ void Ground::update() {
 
 //---------------------------------------------------------------------------------------
 // Bird
-Bird::Bird() : Object2DPhysical() {}
-
 void Bird::update() {
     Object2DPhysical::update();
 

@@ -5,12 +5,13 @@ extern int pivot;
 
 class Ground : public Object2DPhysical {
 public:
-	Ground();
+	using Object2DPhysical::Object2DPhysical;
 	void update();
 };
 
 class Pipe : public Object2DPhysical {
 public:
+	using Object2DPhysical::Object2DPhysical;
 	Pipe();
 	Pipe(int is_buttom);
 	void update();
@@ -19,7 +20,7 @@ public:
 
 class Bird : public Object2DPhysical {
 public:
-	Bird();
+	using Object2DPhysical::Object2DPhysical;
 	void update();
 	void draw() const;
 	int SPEED_UP = -12;
@@ -33,6 +34,7 @@ protected:
 
 class Score : public Object2D {
 public:
+	using Object2D::Object2D;
 	void draw() const;
 	void update();
 	void setPoint(int);

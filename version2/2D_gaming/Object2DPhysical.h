@@ -6,7 +6,16 @@
 /// </summary>
 class Object2DPhysical : public Object2D{
 public:
-    Object2DPhysical();
+    Object2DPhysical(
+        int x = 0,
+        int y = 0,
+        bool visiable = true,
+        bool clickable = false,
+        bool collidable = true,
+        int acceleration_x = 0,
+        int acceleration_y = 0,
+        int speed_x = 0,
+        int speed_y = 0);
 
 // To get properties of othe object
     int             getSpeedX()                     const;
@@ -29,7 +38,7 @@ public:
     virtual void    setCollisionBoxHeight(int val);
 
     void            setCollidability(bool val);
-
+    void            setCollideAction(std::function<void(Object2D&, Object2D&)>);
     /// <summary>
     /// To set multiple value of current object at once
     /// </summary>
@@ -60,6 +69,7 @@ public:
     /// <returns> True iff both object is collidable and the collision happened </returns>
     virtual bool    collision(Object2DPhysical& other_obj);
 
+    std::function<void(Object2D&, Object2D&)> actionCollision;
 
 protected:
     int speed_x;

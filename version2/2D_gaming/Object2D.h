@@ -3,6 +3,7 @@
 #include <graphics.h>
 #include <iostream>
 #include <algorithm>
+#include <functional>
 #include <string>
 #include <vector>
 //#include <signal.h>
@@ -14,6 +15,7 @@ class Object2D
 {
 public:
     Object2D();
+    Object2D(int x, int y, bool visiable = true, bool clickable = false);
     ~Object2D();
 
     virtual void    destroy();
@@ -29,6 +31,8 @@ public:
     bool			isClickable()					const;
     bool			isTransparent()					const;
     bool			isPaused()					    const;
+
+    virtual const Object2D*     getType()           const;
 
 // To modify properties of othe object
 
@@ -46,7 +50,8 @@ public:
     /// <summary>
     /// Action after been clicked, to be defined by the user
     /// </summary>
-    void            (*clickAction)();
+    std::function<void()> clickAction;
+    //void            (*clickAction)();
 
 
     /// <summary>

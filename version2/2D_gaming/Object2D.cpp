@@ -18,6 +18,20 @@ Object2D::Object2D(){
     clickAction = NULL;
 }
 
+Object2D::Object2D(int x, int y, bool visiable, bool clickable) {
+    this->x = x;
+    this->y = y;
+    this->clickable = clickable;
+    this->visiable = visiable;
+    this->clickAction = NULL;
+    this->pause = false;
+
+    this->height = 0;
+    this->width = 0;
+    this->frame = 0;
+}
+
+
 Object2D::~Object2D() {}
 
 void Object2D::destroy() {
@@ -42,6 +56,10 @@ int Object2D::getHeight() const {
 
 int Object2D::getNumImage() const {
     return image.size();
+}
+
+const Object2D* Object2D::getType() const {
+    return this;
 }
 
 

@@ -1,14 +1,12 @@
 #include "Object2DPhysical.h"
 
-Object2DPhysical::Object2DPhysical() : Object2D() {
-    speed_x = 0;
-    speed_y = 0;
+Object2DPhysical::Object2DPhysical(
+    int x, int y, bool visiable, bool clickable, bool collidable,
+    int acceleration_x, int acceleration_y, int speed_x, int speed_y) : Object2D(x, y, visiable, clickable) {
 
-    acceleration_x = 0;
-    acceleration_y = 0;
-
-    collidable = true;
-
+    this->collidable = collidable;
+    this->actionCollision = NULL;
+    this->setValue(x, y, acceleration_x, acceleration_y, speed_x, speed_y);
     collision_box.setWidth(-1);
     collision_box.setHeight(-1);
     collision_box.setVisibility(false);
@@ -64,6 +62,11 @@ void Object2DPhysical::setCollidability(bool val) {
     collidable = val;
 }
 
+void Object2DPhysical::setCollideAction(std::function<void(Object2D&, Object2D&)> fun) {
+    this->actionCollision = fun;
+}
+
+
 void Object2DPhysical::setValue(
     int x,
     int y,
@@ -104,7 +107,12 @@ bool Object2DPhysical::collision(Object2DPhysical& other_obj) {
         other_obj.collision(*this);
     }
 
-    return (collision_box.overlay(other_obj.collision_box));
+    if (collision_box.overlay(other_obj.collision_box)) {
+        if (actionCollision) this->actionCollision(*this, other_obj);
+        if (other_obj.actionCollision) other_obj.actionCollision(other_obj, *this);
+        return true;
+    }
+    return false;
 }
 
 void Object2DPhysical::setCollisionBoxX() {
