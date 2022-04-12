@@ -1,6 +1,10 @@
 #pragma once
 #include "WindowManager.h"
 #include "components.h"
+#include <iostream>
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
+
 class FBWindowManager : public WindowManager {
 
 public:
@@ -8,16 +12,16 @@ public:
 	~FBWindowManager();
 
 	void initResources();
+	void initValue();
 	void windowUserInput();
 
 private:
 	// Call back functions
 	void startGame();
 	void flyBird();
-	void buttonClick();
+	void restartGame();
+	void updateScore();
 	void birdCollision(Object2D&, Object2D&);
-	void turnEnd();
-	void turnStart();
 
 	// Resources
 	Object2D* background;
@@ -25,6 +29,12 @@ private:
 	Bird* bird;
 	Score* score;
 
+	Pipe* pipe_up_1;
+	Pipe* pipe_up_2;
+	Pipe* pipe_buttom_1;
+	Pipe* pipe_buttom_2;
+	std::vector<Pipe*> pipes;
+	IMAGE pipe_img[4];
 
 	Object2D* tutorial;
 	Object2D* title;
@@ -40,35 +50,5 @@ private:
 	Scene scene_onplay;
 	Scene scene_end;
 	SceneCollidable scene_collidable;
-
-
-#if 0
-	// 2 pairs of pipes
-	Pipe* pipe_up_1;
-	Pipe* pipe_up_2;
-	Pipe* pipe_buttom_1;
-	Pipe* pipe_buttom_2;
-	Pipe* pipe_pair[2][2];
-	Pipe* pipes[4];
-	IMAGE       pipe[4];
-	int         pivot = 0;
-
-	Score* score = new Score();
-
-	Object2D* tutorial = new Object2D();
-	Object2D* title = new Object2D();
-	Object2D* button_play = new Object2D();
-	Object2D* game_over = new Object2D();
-
-
-	// Scenes
-	std::vector<Object2D*> resource_before;
-	std::vector<Object2D*> resource_onplay;
-	std::vector<Object2D*> resource_end;
-
-	Scene scene_before;
-	Scene scene_onplay;
-	Scene scene_end;
-#endif
 };
 

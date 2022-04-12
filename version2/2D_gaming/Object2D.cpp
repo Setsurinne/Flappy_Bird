@@ -16,6 +16,7 @@ Object2D::Object2D(){
     pause = false;
 
     clickAction = NULL;
+    updateAction = NULL;
 }
 
 Object2D::Object2D(int x, int y, bool visiable, bool clickable) {

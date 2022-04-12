@@ -16,6 +16,7 @@ public:
 	Pipe(int is_buttom);
 	void update();
 	bool is_buttom = false;
+	Pipe* pair = NULL;
 };
 
 class Bird : public Object2DPhysical {
@@ -38,6 +39,7 @@ public:
 	void draw() const;
 	void update();
 	void setPoint(int);
+	int getPoint() const;
 
 private:
 	int point = 0;

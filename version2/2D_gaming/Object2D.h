@@ -51,7 +51,11 @@ public:
     /// Action after been clicked, to be defined by the user
     /// </summary>
     std::function<void()> clickAction;
-    //void            (*clickAction)();
+
+    /// <summary>
+    /// Action after been updated, to be defined by the user
+    /// </summary>
+    std::function<void()> updateAction;
 
 
     /// <summary>

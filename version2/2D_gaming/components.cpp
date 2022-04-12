@@ -71,12 +71,13 @@ void Pipe::update() {
         this->setX(310);
 
         if (this->is_buttom) {
+            int pivot = rand() % 250;
             this->setY(pivot + 165);
-        }
-        else{                                   // Update pivot when the upper one is reset
-            pivot = rand() % 250;
-            update_score = true;
-            this->setY(pivot - 305);
+            this->pair->setY(pivot - 305);
+
+            if (this->updateAction) {
+                updateAction();
+            }
         }
     }
 }
@@ -107,6 +108,10 @@ void Score::update() {
         point += 1;
         update_score = false;
     }
+}
+
+int Score::getPoint() const {
+    return this->point;
 }
 
 void Score::setPoint(int val) {
