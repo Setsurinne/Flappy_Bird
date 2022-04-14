@@ -35,7 +35,11 @@ FBWindowManager::FBWindowManager(World& world) : WindowManager(world) {
 	this->initResources();
 }
 
-FBWindowManager::~FBWindowManager() {}
+FBWindowManager::~FBWindowManager() {
+	delete [] &resource_before;
+	delete [] &resource_onplay;
+	delete [] &resource_end;
+}
 
 void FBWindowManager::initResources() {
 	// background
@@ -95,20 +99,25 @@ void FBWindowManager::initResources() {
 }
 
 void FBWindowManager::initValue() {
+	// Background
 	background->setClickability(true);
 	background->clickAction = [this]() {this->startGame();};
 
+	// Ground
 	ground->setValue(0, 420, 0, 0, -3, 0);
 	ground->setPause(false);
 
+	// Bird
 	bird->setValue(30, 200);
 	bird->setCollisionBoxHeight(bird->getHeight() * 0.6);
 	bird->setCollisionBoxWidth(bird->getWidth() * 0.75);
-
+	
+	// Score
 	score->setValue(this->getWorld()->getWidth() / 2, 5);
 	score->setPoint(0);
 	score->setVisibility(false);
-
+	
+	// Pipes
 	int pivot = rand() % 250;
 	pipe_up_1		->setValue(this->getWorld()->getWidth(), pivot - 305);
 	pipe_buttom_1	->setValue(this->getWorld()->getWidth(), pivot + 165);
@@ -120,11 +129,12 @@ void FBWindowManager::initValue() {
 		p->setPause(false);
 	}
 
-	title->setValue((this->getWorld()->getWidth() - title->getWidth()) / 2, this->getWorld()->getHeight() * 0.1);
-	tutorial->setValue((this->getWorld()->getWidth() - tutorial->getWidth()) / 2, this->getWorld()->getHeight() * 0.5);
-	button_play->setValue((this->getWorld()->getWidth() - button_play->getWidth()) / 2, this->getWorld()->getHeight() * 0.8);
-	game_over->setValue((this->getWorld()->getWidth() - game_over->getWidth()) / 2, this->getWorld()->getHeight() * 0.1);
-	button_play->setClickability(true);
+	// Other texts
+	title		->setValue((this->getWorld()->getWidth() - title->getWidth())		/ 2, this->getWorld()->getHeight() * 0.1);
+	tutorial	->setValue((this->getWorld()->getWidth() - tutorial->getWidth())	/ 2, this->getWorld()->getHeight() * 0.5);
+	button_play	->setValue((this->getWorld()->getWidth() - button_play->getWidth()) / 2, this->getWorld()->getHeight() * 0.8);
+	game_over	->setValue((this->getWorld()->getWidth() - game_over->getWidth())	/ 2, this->getWorld()->getHeight() * 0.1);
+	button_play	->setClickability(true);
 
 	// BGM
 	mciSendString("seek bgm to start", 0, 0, 0);
@@ -180,6 +190,7 @@ void FBWindowManager::flyBird() {
 void FBWindowManager::birdCollision(Object2D& obj1, Object2D& obj2) {
 	std::cout << "collision" << std::endl;
 
+	// Collision with ground
 	if (typeid(obj1) == typeid(Ground) || typeid(obj2) == typeid(Ground)) {
 		std::cout << "ground col" << std::endl;
 		score->setY(250);
@@ -189,6 +200,7 @@ void FBWindowManager::birdCollision(Object2D& obj1, Object2D& obj2) {
 		scene_end.sceneBegin();
 	}
 
+	// Collision with pipe
 	else if (typeid(obj1) == typeid(Pipe) || typeid(obj2) == typeid(Pipe)) {
 		std::cout << "pipe col" << std::endl;
 		bird->setSpeedY(bird->SPEED_UP / 2);

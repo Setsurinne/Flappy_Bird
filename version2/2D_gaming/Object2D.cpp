@@ -19,7 +19,7 @@ Object2D::Object2D(){
     updateAction = NULL;
 }
 
-Object2D::Object2D(int x, int y, bool visiable, bool clickable) {
+Object2D::Object2D(float x, float y, bool visiable, bool clickable) {
     this->x = x;
     this->y = y;
     this->clickable = clickable;
@@ -39,19 +39,19 @@ void Object2D::destroy() {
     this->~Object2D();
 }
 
-int Object2D::getX() const {
+float Object2D::getX() const {
     return x;
 }
 
-int Object2D::getY() const {
+float Object2D::getY() const {
     return y;
 }
 
-int Object2D::getWidth() const {
+float Object2D::getWidth() const {
     return width;
 }
 
-int Object2D::getHeight() const {
+float Object2D::getHeight() const {
     return height;
 }
 
@@ -81,26 +81,26 @@ bool Object2D::isPaused() const {
     return pause;
 }
 
-void Object2D::setValue(int x, int y)
+void Object2D::setValue(float x, float y)
 {
     this->x = x;
     this->y = y;
 }
 
 
-void Object2D::setX(int val) {
+void Object2D::setX(float val) {
     x = val;
 }
 
-void Object2D::setY(int val) {
+void Object2D::setY(float val) {
     y = val;
 }
 
-void Object2D::setHeight(int val) {
+void Object2D::setHeight(float val) {
     height = val;
 }
 
-void Object2D::setWidth(int val) {
+void Object2D::setWidth(float val) {
     width = val;
 }
 
@@ -171,12 +171,12 @@ bool Object2D::overlay(const Object2D& other_obj) const {
 }
 
 
-bool Object2D::isClickMe(int cx, int cy)
+bool Object2D::isClickMe(float cx, float cy)
 {
     return cx >= x && cy >= y && x + width >= cx && y + height >= cy;
 }
 
-void Object2D::receiveEvent(int cx, int cy) {
+void Object2D::receiveEvent(float cx, float cy) {
     if (isClickable() && clickAction && isClickMe(cx, cy))
     {
         clickAction();

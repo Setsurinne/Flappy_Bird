@@ -15,16 +15,16 @@ class Object2D
 {
 public:
     Object2D();
-    Object2D(int x, int y, bool visiable = true, bool clickable = false);
+    Object2D(float x, float y, bool visiable = true, bool clickable = false);
     ~Object2D();
 
     virtual void    destroy();
 
 // To get properties of othe object
-    int				getX()							const;
-    int				getY()							const;
-    int				getHeight()						const;
-    int				getWidth()						const;
+    float				getX()							const;
+    float				getY()							const;
+    float				getHeight()						const;
+    float				getWidth()						const;
     int				getNumImage()					const;
 
     bool			isVisiable()					const;
@@ -36,12 +36,12 @@ public:
 
 // To modify properties of othe object
 
-    virtual void	setValue(int x = 0, int y = 0);
+    virtual void	setValue(float x = 0, float y = 0);
 
-    virtual void	setX(int val);
-    virtual void	setY(int val);
-    void			setHeight(int val);
-    void			setWidth(int val);
+    virtual void	setX(float val);
+    virtual void	setY(float val);
+    void			setHeight(float val);
+    void			setWidth(float val);
 
     void			setVisibility(bool val);
     void			setClickability(bool val);
@@ -63,7 +63,7 @@ public:
     /// </summary>
     /// <param name="cx"> x value of a click action </param>
     /// <param name="cy"> y value of a click action </param>
-    void            receiveEvent(int cx, int cy);
+    void            receiveEvent(float cx, float cy);
 
 
     /// <summary>
@@ -114,10 +114,10 @@ public:
 
 protected:
 // Basic properties
-    int x;
-    int y;
-    int height;
-    int width;
+    float x;
+    float y;
+    float height;
+    float width;
     int frame;
 
     /// <summary>
@@ -144,5 +144,5 @@ protected:
     /// <param name="cx"> x value of a click action </param>
     /// <param name="cy"> y value of a click action </param>
     /// <returns> True iff current object is clickable and the click action is on current object </returns>
-    bool isClickMe(int cx, int cy);
+    bool isClickMe(float cx, float cy);
 };

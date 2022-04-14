@@ -5,6 +5,7 @@
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
 
+// Flappy Bird window manager
 class FBWindowManager : public WindowManager {
 
 public:

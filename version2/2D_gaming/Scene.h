@@ -2,6 +2,10 @@
 #include <vector>
 #include "Object2D.h"
 
+/// <summary>
+/// A scene is a collection of Object2D
+/// With Scene, user could control a serious of related Object2D at the same time
+/// </summary>
 class Scene
 {
 public:
@@ -22,7 +26,14 @@ public:
 	virtual void updateByTick();
 	void leftButtonClick(const MOUSEMSG&);
 
+	/// <summary>
+	/// Begin event of the scene
+	/// </summary>
 	void sceneBegin();
+
+	/// <summary>
+	/// End event of the scene
+	/// </summary>
 	void sceneEnd();
 
 

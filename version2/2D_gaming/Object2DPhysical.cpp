@@ -1,8 +1,8 @@
 #include "Object2DPhysical.h"
 
 Object2DPhysical::Object2DPhysical(
-    int x, int y, bool visiable, bool clickable, bool collidable,
-    int acceleration_x, int acceleration_y, int speed_x, int speed_y) : Object2D(x, y, visiable, clickable) {
+    float x, float y, bool visiable, bool clickable, bool collidable,
+    float acceleration_x, float acceleration_y, float speed_x, float speed_y) : Object2D(x, y, visiable, clickable) {
 
     this->collidable = collidable;
     this->actionCollision = NULL;
@@ -12,19 +12,19 @@ Object2DPhysical::Object2DPhysical(
     collision_box.setVisibility(false);
 }
 
-int Object2DPhysical::getSpeedX() const {
+float Object2DPhysical::getSpeedX() const {
     return speed_x;
 }
 
-int Object2DPhysical::getSpeedY() const {
+float Object2DPhysical::getSpeedY() const {
     return speed_y;
 }
 
-int Object2DPhysical::getAccX() const {
+float Object2DPhysical::getAccX() const {
     return acceleration_x;
 }
 
-int Object2DPhysical::getAccY() const {
+float Object2DPhysical::getAccY() const {
     return acceleration_y;
 }
 
@@ -32,29 +32,29 @@ bool Object2DPhysical::isCollidable() const {
     return collidable;
 }
 
-void Object2DPhysical::setX(int val) {
+void Object2DPhysical::setX(float val) {
     Object2D::setX(val);
     setCollisionBoxX();
 }
 
-void Object2DPhysical::setY(int val) {
+void Object2DPhysical::setY(float val) {
     Object2D::setY(val);
     setCollisionBoxY();
 }
 
-void Object2DPhysical::setSpeedX(int val) {
+void Object2DPhysical::setSpeedX(float val) {
     speed_x = val;
 }
 
-void Object2DPhysical::setSpeedY(int val) {
+void Object2DPhysical::setSpeedY(float val) {
     speed_y = val;
 }
 
-void Object2DPhysical::setAccX(int val) {
+void Object2DPhysical::setAccX(float val) {
     acceleration_x = val;
 }
 
-void Object2DPhysical::setAccY(int val) {
+void Object2DPhysical::setAccY(float val) {
     acceleration_y = val;
 }
 
@@ -68,12 +68,12 @@ void Object2DPhysical::setCollideAction(std::function<void(Object2D&, Object2D&)
 
 
 void Object2DPhysical::setValue(
-    int x,
-    int y,
-    int acceleration_x,
-    int acceleration_y,
-    int speed_x,
-    int speed_y)
+    float x,
+    float y,
+    float acceleration_x,
+    float acceleration_y,
+    float speed_x,
+    float speed_y)
 {
     setX(x);
     setY(y);
@@ -123,10 +123,10 @@ void Object2DPhysical::setCollisionBoxY() {
     collision_box.setY(y);
 }
 
-void Object2DPhysical::setCollisionBoxWidth(int val){
+void Object2DPhysical::setCollisionBoxWidth(float val){
     collision_box.setWidth(val);
 }
 
-void Object2DPhysical::setCollisionBoxHeight(int val) {
+void Object2DPhysical::setCollisionBoxHeight(float val) {
     collision_box.setHeight(val);
 }

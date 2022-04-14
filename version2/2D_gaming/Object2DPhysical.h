@@ -7,35 +7,35 @@
 class Object2DPhysical : public Object2D{
 public:
     Object2DPhysical(
-        int x = 0,
-        int y = 0,
+        float x = 0,
+        float y = 0,
         bool visiable = true,
         bool clickable = false,
         bool collidable = true,
-        int acceleration_x = 0,
-        int acceleration_y = 0,
-        int speed_x = 0,
-        int speed_y = 0);
+        float acceleration_x = 0,
+        float acceleration_y = 0,
+        float speed_x = 0,
+        float speed_y = 0);
 
 // To get properties of othe object
-    int             getSpeedX()                     const;
-    int             getSpeedY()                     const;
-    int             getAccX()                       const;
-    int             getAccY()                       const;
+    float             getSpeedX()                     const;
+    float             getSpeedY()                     const;
+    float             getAccX()                       const;
+    float             getAccY()                       const;
 
     bool            isCollidable()                  const;
 
 
 // To modify properties of the object
-    virtual void    setX(int val);
-    virtual void    setY(int val);
-    void            setSpeedX(int val);
-    void            setSpeedY(int val);
-    void            setAccX(int val);
-    void            setAccY(int val);
+    virtual void    setX(float val);
+    virtual void    setY(float val);
+    void            setSpeedX(float val);
+    void            setSpeedY(float val);
+    void            setAccX(float val);
+    void            setAccY(float val);
 
-    virtual void    setCollisionBoxWidth(int val);
-    virtual void    setCollisionBoxHeight(int val);
+    virtual void    setCollisionBoxWidth(float val);
+    virtual void    setCollisionBoxHeight(float val);
 
     void            setCollidability(bool val);
     void            setCollideAction(std::function<void(Object2D&, Object2D&)>);
@@ -49,12 +49,12 @@ public:
     /// <param name="speed_x">: If indicated, represents speed in direction of x </param>
     /// <param name="speed_y">: If indicated, represents speed in direction of xy</param>
     virtual void    setValue(
-        int x = 0,
-        int y = 0,
-        int acceleration_x = 0,
-        int acceleration_y = 0,
-        int speed_x = 0,
-        int speed_y = 0
+        float x = 0,
+        float y = 0,
+        float acceleration_x = 0,
+        float acceleration_y = 0,
+        float speed_x = 0,
+        float speed_y = 0
     );
 
     /// <summary>
@@ -72,11 +72,11 @@ public:
     std::function<void(Object2D&, Object2D&)> actionCollision;
 
 protected:
-    int speed_x;
-    int speed_y;
+    float speed_x;
+    float speed_y;
 
-    int acceleration_x;
-    int acceleration_y;
+    float acceleration_x;
+    float acceleration_y;
 
     /// <summary>
     /// Decide if current object is responsive to collision and continous effects
